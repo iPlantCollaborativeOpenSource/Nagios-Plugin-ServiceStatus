@@ -1,0 +1,108 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+use Carp;
+
+use Nagios::Plugin::ServiceStatus qw(invoke);
+
+invoke(@ARGV);
+
+exit;
+__END__
+
+
+=head1 NAME
+
+check_service - checks the status of an initd service.
+
+
+=head1 VERSION
+
+This documentation refers to check_status version 0.0.1.
+
+
+=head1 USAGE
+
+    # Check the status of a service named "foo".
+    check_status -s foo
+
+=head1 REQUIRED ARGUMENTS
+
+=over
+
+=item --service -s
+
+Specifies the name of the service to check.
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item --verbose -v
+
+Increases the verbosity of the output. This option is currently ignored.
+
+=item --help
+
+Displays a brief help message and exits.
+
+=item --usage
+
+Displays a usage message and exits.
+
+=item --timeout
+
+Specifies the timeout period for the check. This option is currently ignored.
+
+=item --host
+
+Specifies the name of the host being checked.
+
+=back
+
+=head1 DESCRIPTION
+
+Uses /sbin/service to check the status of an initd service. This plugin works
+by invoking the following command:
+
+    /sbin/service <service-name> status
+
+where <service-name> refers to the name of the service specified using the
+--service or -s argument. If the service appears to be running then the exit
+status will be 0, which is interpreted as an indication that the service is
+working correctly by Nagios. If the service appears to be down or appears to
+have crashed then the exit status will be 2, which is interpreted as a
+critical failure. If the status of the service cannot be determined then the
+exit status is 3, which indicates that the status of the service is unknown.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+No special configuration is required.
+
+=head1 DEPENDENCIES
+
+This script depends on and is included with Nagios::Plugin::ServiceStatus.
+Please see the module's documentation for additional dependency information.
+
+=head1 INCOMPATIBILITIES
+
+None reported.
+
+=head1 BUGS AND LIMITATIONS
+
+No bugs have been reported.
+
+Please report any bugs or feature requests to the Core Software team.
+
+
+=head1 AUTHOR
+
+Dennis Roberts  C<< <dennis@iplantcollaborative.org> >>
+
+
+=head1 LICENSE AND COPYRIGHT
+
+L<http://www.iplantcollaborative.org/sites/default/files/iPLANT-LICENSE.txt>
