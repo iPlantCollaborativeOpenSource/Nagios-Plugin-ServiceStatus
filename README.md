@@ -17,6 +17,7 @@ Perl Build.PL
 
 DEPENDENCIES
 
+* IPC::Run
 * Nagios::Plugin
 * Test::More
 * version

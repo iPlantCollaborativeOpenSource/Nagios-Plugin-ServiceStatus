@@ -9,6 +9,7 @@ my $builder = Module::Build->new(
     dist_author        => 'Dennis Roberts <dennis@iplantcollaborative.org>',
     dist_version_from  => 'lib/Nagios/Plugin/ServiceStatus.pm',
     requires           => {
+        'IPC::Run'       => 0,
         'Nagios::Plugin' => 0,
         'Test::More'     => 0,
         'version'        => 0,

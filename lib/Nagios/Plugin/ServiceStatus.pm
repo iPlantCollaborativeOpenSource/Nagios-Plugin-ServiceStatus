@@ -8,6 +8,7 @@ use Carp;
 use version; our $VERSION = qv('0.0.1');
 
 use File::Basename qw(basename);
+use IPC::Run qw(run);
 use Nagios::Plugin;
 
 our @EXPORT_OK = qw(invoke);
@@ -37,20 +38,17 @@ sub _validate_service_name {
 sub _check_status {
     my ($plugin) = @_;
 
-    # Open subprocess.
+    # Build the command.
     my $service    = $plugin->opts->service;
     my $executable = '/sbin/service';
-    open my $in, q{-|}, $executable, $service, 'status'
-        or $plugin->nagios_die(" unable to execute $executable: $ERRNO");
+    my @cmd        = ( $executable, $service, 'status' );
 
-    # Slurp the output.
-    my $output = do { local $RS = undef; <$in> };
+    # Run the command.
+    my ( $in, $out, $err );
+    run( \@cmd, \$in, \$out, \$err )
+        or $plugin->nagios_die(" $err");
 
-    # Close the subrpocess.
-    close $in
-        or $plugin->nagios_die(" $executable returned: $CHILD_ERROR");
-
-    return $output;
+    return $out;
 }
 
 sub _determine_exit_code {
@@ -172,16 +170,6 @@ Set a timeout for the check. This option is currently ignored.
 
 The --service or -s argument was not specified on the command line.
 
-=item C<< unable to execute /sbin/service: %s >>
-
-The command, /sbin/service, could not be executed. Verify that the command is
-present and that the user has permission to read and execute it.
-
-=item C<< /sbin/service returned %s >>
-
-The command, /sbin/service, could be executed, but it returned an error status
-code. Try running the command manually to determine the cause of the error.
-
 =back
 
 
@@ -194,6 +182,11 @@ variables.
 =head1 DEPENDENCIES
 
 =over
+
+=item IPC::Run
+
+Used to run /sbin/service while capturing output from both the stdout and
+stderr streams.
 
 =item Nagios::Plugin
 
