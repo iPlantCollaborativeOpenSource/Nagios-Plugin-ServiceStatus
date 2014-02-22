@@ -6,6 +6,8 @@ use Carp;
 
 use Nagios::Plugin::ServiceStatus qw(invoke);
 
+use version; our $VERSION = qv('0.0.1');
+
 invoke(@ARGV);
 
 exit;
@@ -78,7 +80,30 @@ have crashed then the exit status will be 2, which is interpreted as a
 critical failure. If the status of the service cannot be determined then the
 exit status is 3, which indicates that the status of the service is unknown.
 
-=head1 CONFIGURATION AND ENVIRONMENT
+=head1 DIAGNOSTICS
+
+Please see the diagnostic information for Nagios::Plugin::ServiceStatus for
+more information.
+
+=head1 EXIT STATUS
+
+=over
+
+=item 0
+
+The service is running.
+
+=item 2
+
+The service is not running.
+
+=item 3
+
+The script could not determine if the service is running.
+
+=back
+
+=head1 CONFIGURATION
 
 No special configuration is required.
 

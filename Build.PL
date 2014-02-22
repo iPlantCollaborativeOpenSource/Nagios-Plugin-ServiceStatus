@@ -14,6 +14,7 @@ my $builder = Module::Build->new(
         'version'        => 0,
     },
     add_to_cleanup => ['Nagios-Plugin-ServiceStatus-*'],
+    script_files   => ['script/check_service'],
 );
 
 $builder->create_build_script();
