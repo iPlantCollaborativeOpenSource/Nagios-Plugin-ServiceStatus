@@ -10,5 +10,3 @@ t/pod-coverage.t
 t/pod.t
 META.yml
 META.json
-MYMETA.yml
-MYMETA.json
